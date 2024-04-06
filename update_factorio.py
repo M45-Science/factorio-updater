@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
 
-from __future__ import print_function
 import os, posixpath, requests, re, sys
 import argparse
 import json
 import subprocess
 from zipfile import ZipFile
-try:
-    import urllib.parse as url_parse
-except ImportError:
-    import urlparse as url_parse
+import urllib.parse as url_parse
+
 
 def file_path(string):
     if os.path.isfile(string):
@@ -264,8 +261,8 @@ def main():
     args = parser.parse_args()
     glob['verbose'] = args.verbose
 
-    creds = parse_credentials(args.credentials_file, args.user, args.token)
-    j = get_updater_data(*creds)
+    (args.user, args.token) = parse_credentials(args.credentials_file, args.user, args.token)
+    j = get_updater_data(args.user, args.token)
     if args.list_packages:
         print('Available packages:')
         for package in j.keys():
